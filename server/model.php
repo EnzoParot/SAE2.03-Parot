@@ -19,15 +19,15 @@ define("DBLOGIN", "parot23");
 define("DBPWD", "parot23");
 
 
-function getAllMovies(){
+unction getMovie(){
+    // Connexion à la base de données
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    // Requête SQL pour récupérer le menu avec des paramètres
-    $sql = "select id, name, image from Movie";
-    // Lie le paramètre à la valeur
-    $stmt = $cnx->prepare($sql);
-    // Exécute la requête SQL
-    $stmt->execute();
-    // Récupère les résultats de la requête sous forme d'objets
-    $res = $stmt->fetchAll(PDO::FETCH_OBJ);
+    // Requête SQL pour récupérer le nom, l'image et l'id du film
+    $sql = "SELECT id, name, image FROM Movie";
+
+    // exécution de la requête SQL via la connexion à la bdd et récupération de la réponse sur serveur MySQL
+    $answer = $cnx->query($sql);
+    // conversion des lignes récupérées en tableau d'objets (chaque ligne devient un objet)
+    $res = $answer->fetchAll(PDO::FETCH_OBJ);
     return $res; // Retourne les résultats
 }

@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="fr">
   <head>
     <title>SAE2.03 APP</title>
@@ -14,8 +13,11 @@
 
     <script type="module">
       import { NavBar } from "./component/NavBar/script.js";
-      import { DataMovie} from "./data/dataMovie.js";   
       import { Movie } from "./component/Movie/script.js";
+
+      import { DataMovie } from "./data/dataMovie.js";
+
+
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
       // Une fois l'application terminée, on pourrait remettre let C.
@@ -27,34 +29,14 @@
         );
       };
 
-      C.start = function () {
-        V.renderNavBar("C.handlerAbout()");
-      };
-   // Controleur
-      // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
-      // Une fois l'application terminée, on pourrait remettre let C.
-      window.C = {};
-
-      C.userAge = null; // Stocke l'âge de l'utilisateur sélectionné
-
-      // On applelle la fonction handlerMovies lorsqu'on clique sur le bouton "Films"
-      C.handlerMovies = function () {
-        C.getMovie(); // on fait appelle à C.getMovie() qu'on a défini plus bas
-      };
-
-      C.handlerDetail = async function (id) {
-        console.log("ID reçu :", id); // debug
-
-        let details = await DataMovie.requestMoviedetails(id);
-        console.log("Détails du film :", details); // debug
-        V.renderMovieDetail(details[0]);
-      };
-
       C.start = async function () {
-        await V.renderNavBar("C.handlerMovies()");
-        V.renderMovieCategorie();
-        C.getMovie();
-      }
+        V.renderNavBar("C.handlerAbout()");
+        let movies = await DataMovie.requestMovies();
+        V.renderMovie(movies);
+      };
+
+      
+
       // Vue (contient tout ce qui est relatif à l'affichage)
       window.V = {};
 
@@ -70,12 +52,27 @@
         header.innerHTML = NavBar.format(hAbout);
       };
 
-      V.renderMovie = function (data) {
-        let content = document.querySelector("#header");
-        header.innerHTML = Movie.format(hAbout);
+      V.renderMovie = async function (f) {
+        let content = document.querySelector("#content");
+        f.forEach((movie) => {
+          let HTML = Movie.format(movie);
+          content.innerHTML += HTML
+        });
       };
+      
 
       C.start(); // Démarre l'application
+
+
+
+
+//      import { Movie } from "./component/Movie/script.js";
+//
+//      
+//     import {dataMovie} from "./data/dataMovie.js";
+//import {Movie} from "./component/Movie/script.js";
+//Movie.render("#Movie-samples", dataMovie);
+
     </script>
   </body>
 </html>
